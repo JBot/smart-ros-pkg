@@ -1,0 +1,17 @@
+<package>
+  <description brief="ch6dm_driver">
+
+     ch6dm_driver
+
+  </description>
+  <author>joffrey</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/ch6dm_driver</url>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="tf"/>
+
+</package>
+
+
