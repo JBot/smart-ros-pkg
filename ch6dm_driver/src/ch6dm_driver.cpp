@@ -61,7 +61,7 @@ int main(int argc, char **argv)
         ros::Publisher imu_pub = n.advertise < sensor_msgs::Imu > ("imu", 50);
         sensor_msgs::Imu imu;
 
-        imu.header.frame_id = "/imu_link";
+        imu.header.frame_id = frame_id2;
         imu.header.stamp = ros::Time::now();
 
         rotate(0.0, 0.0, 0.0, &(imu.orientation));
