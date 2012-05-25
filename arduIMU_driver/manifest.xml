@@ -1,0 +1,19 @@
+<package>
+  <description brief="arduIMU_driver">
+
+     arduIMU_driver
+
+  </description>
+  <author>joffrey</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/arduIMU_driver</url>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="tf"/>
+
+  <rosdep name="boost" />
+
+</package>
+
+
