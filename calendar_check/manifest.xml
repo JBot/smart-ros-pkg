@@ -1,0 +1,18 @@
+<package>
+  <description brief="calendar_check">
+
+     calendar_check
+
+  </description>
+  <author>joffrey</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/calendar_check</url>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+
+<!-- depends also to : http://code.google.com/p/googlecl/ -->
+
+</package>
+
+
