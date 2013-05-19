@@ -1,6 +1,7 @@
 /* ROS includes */
 #include <ros/ros.h>
 #include <std_msgs/Int32.h>
+#include <std_msgs/String.h>
 
 /* C includes */
 #include <stdio.h>
@@ -19,13 +20,14 @@ class calendarCheck {
     public:
         calendarCheck();
 
-        //ros::Subscriber pose_sub_;
         ros::Publisher command_pub;
+        ros::Publisher english_pub;
 
         void check_calendar(void);
 
     private:
 
+	std::string name;
 	ros::NodeHandle nh;
 
 };
@@ -33,13 +35,20 @@ class calendarCheck {
 /* Constructor */
 calendarCheck::calendarCheck()
 {
-    command_pub = nh.advertise < std_msgs::Int32 > ("/calendar/command", 3);
+	nh.param("calendar_name", name, std::string("smart_robotics_agenda"));
+    	command_pub = nh.advertise < std_msgs::Int32 > ("/calendar/command", 3);
+    	english_pub = nh.advertise < std_msgs::String > ("nestor/english_voice", 3);
 }
 
 void calendarCheck::check_calendar(void)
 {
+	char google_command[256];
+	char *my_buff=new char[(name).size()+1];
+	my_buff[(name).size()] = 0;
+	memcpy(my_buff, (name).c_str(), (name).size());
+	sprintf(google_command, "google calendar --cal=%s today", my_buff);
 	/* Open the calendar */
-        FILE * f = popen( "google calendar --cal=YOUR-AGENDA-HERE today", "r" );
+        FILE * f = popen( google_command, "r" );
         if ( f == 0 ) {
                 fprintf( stderr, "Could not execute\n" );
                 return;
@@ -110,23 +119,18 @@ void calendarCheck::check_calendar(void)
 					std_msgs::Int32 my_command;
 					my_command.data = atoi((my_string.substr(8, 2)).c_str());
 					std::cout << "Commande numéro :" << my_command.data << std::endl;
+					command_pub.publish(my_command);
 				}
 				else { 
 					/* This is something to say */
-					char* nl = strrchr(buff, '\r');
-					if (nl) *nl = '\0';
-					nl = strrchr(buff, '\n');
-					if (nl) *nl = '\0';
-					char my_buff[256];
-					//cout << buff;
-
-					sprintf(my_buff, "espeak -g 1 -v us-mbrola-1 \" In less than 5 minutes \"");
-					std::cout << my_buff << std::endl;
-					system(my_buff);
-					sprintf(my_buff, "espeak -g 1 -v us-mbrola-1 \" %s \"", buff);
-					std::cout << my_buff << std::endl;
+					std_msgs::String to_send;
+					to_send.data = "In less than 5 minutes";
+					english_pub.publish(to_send);
 					usleep(1000000);
-					system(my_buff);
+					to_send.data = my_string;
+					english_pub.publish(to_send);
+
+
 				}
 			}
 		}
